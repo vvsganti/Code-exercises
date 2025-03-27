@@ -79,3 +79,42 @@ export const setupStartStopButtons = () => {
     startButton.addEventListener("click", startLogging);
     stopButton.addEventListener("click", stopLogging);
 };
+
+export function fetchData() {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            const success = Math.random() > 0.5; // Random success/failure
+            success ? resolve("Data fetched successfully!") : reject("Error fetching data");
+        }, 1000);
+    });
+}
+
+export async function handleFetch() {
+    try {
+        const result = await fetchData();
+        console.log(result);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+export async function fetchPosts() {
+    try {
+        const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const posts = await response.json();
+        console.log(posts.slice(0, 5)); // Log first 5 posts
+    } catch (error) {
+        console.error("Failed to fetch posts:", error);
+    }
+}
+
+export function processUsers(users) {
+    return {
+        names: users.map(user => user.name), // Extracts names
+        olderUsers: users.filter(user => user.age > 28), // Filters users older than 28
+        totalAge: users.reduce((sum, user) => sum + user.age, 0) // Calculates total age
+    };
+}
